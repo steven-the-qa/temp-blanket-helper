@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { format } from 'date-fns'
 
 function App() {
   const [weatherStation, setWeatherStation] = useState()
-  const [lastWeekWeather, setLastWeekWeather] = useState()
+  const [lastWeekDailyTemps, setLastWeekDailyTemps] = useState()
+  const [lastWeekAvg, setLastWeekAvg] = useState('?')
+  const [lastWeekColor, setLastWeekColor] = useState()
 
   const location = {
     "lat": 43.170058,
@@ -12,49 +15,133 @@ function App() {
   const currentDate = new Date()
   const millsInADay = 86400000
   const yesterday = new Date(currentDate - millsInADay)
-  const weekAndADayAgo = new Date(currentDate - (8 * millsInADay))
+  const weekAndADayAgo = new Date(currentDate - (7 * millsInADay))
+  const formatter = 'yyyy-MM-dd'
+  const start = format(weekAndADayAgo, formatter)
+  const end = format(yesterday, formatter)
   
   const api_key = '2fcce1cd8cmshc6e945908329dc5p19917fjsn583f60c82fc6'
+  const host = 'meteostat.p.rapidapi.com'
   const lat = location.lat
   const lon = location.lon
 
-  const getWeatherStation = () => {
-    const url = `https://meteostat.p.rapidapi.com/stations/nearby?rapidapi-key=${api_key}&lat=${lat}&lon=${lon}&limit=1`
-    axios.get(url)
-      .then(res => {
-        const station = res.data
-        setWeatherStation(station)
+  function getWeatherStation() {
+    const options = {
+      method: 'GET',
+      url: 'https://meteostat.p.rapidapi.com/stations/nearby',
+      params: {lat: lat, lon: lon, limit: 1},
+      headers: {
+        'X-RapidAPI-Key': api_key,
+        'X-RapidAPI-Host': host
+      }
+    };
+
+    axios.request(options)
+      .then(function (response) {
+        const station = response.data.data[0];
+        setWeatherStation(station.id)
       })
+      .catch(function (error) {
+        console.error(error);
+      });
   }
 
-  const start = Date.parse(weekAndADayAgo)
-  const end = Date.parse(yesterday)
+  function getWeather() {
+    const options = {
+      method: 'GET',
+      url: 'https://meteostat.p.rapidapi.com/stations/daily',
+      params: {station: weatherStation, start: start, end: end},
+      headers: {
+        'X-RapidAPI-Key': api_key,
+        'X-RapidAPI-Host': host
+      }
+    };
 
-  const getWeather = () => {
-    const url = `https://meteostat.p.rapidapi.com/stations/daily?rapidapi-key=${api_key}&station=${weatherStation}&start=${start}&end=${end}&units=imperial`
-    axios.get(url)
-      .then(res => {
-        const weather = res.data
-        setLastWeekWeather(weather)
-        console.log(lastWeekWeather)
-      })
+    axios.request(options).then(function (response) {
+      setLastWeekDailyTemps(response.data.data)
+      console.log(response.data.data)
+    }).catch(function (error) {
+      console.error(error);
+    });
   }
-  const avgTemp = useState(69)
-  const color = useState('red')
+
+  function celsiusToFahrenheit(tempC) {
+    return Math.round(tempC * 1.8 + 32)
+  }
+
+  function getAvgTemp() {
+    let sum = 0;
+    for (let i in lastWeekDailyTemps) {
+      sum += lastWeekDailyTemps[i].tavg
+    }
+    // We should only run this for a list of 7 daily temps
+    setLastWeekAvg(celsiusToFahrenheit(sum / 7))
+  }
+
+  function updateAvg() {
+    getWeatherStation()
+    getWeather()
+    getAvgTemp()
+  }
+
+  function convertFromCamel(camelCaseText) {
+    if (typeof camelCaseText === 'string') {
+      const result = camelCaseText.replace(/([A-Z])/g, " $1");
+      const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
+  
+      return finalResult
+    }
+    return camelCaseText
+  }
+
+  useEffect(() => {
+    if (typeof lastWeekAvg === 'number') {
+      if (lastWeekAvg <= 10) {
+        setLastWeekColor('purple')
+      }
+      else if (lastWeekAvg >= 11 && lastWeekAvg <= 20) {
+        setLastWeekColor('indigo')
+      }
+      else if (lastWeekAvg >= 21 && lastWeekAvg <= 30) {
+        setLastWeekColor('royalBlue')
+      }
+      else if (lastWeekAvg >= 31 && lastWeekAvg <= 40) {
+        setLastWeekColor('aquamarine')
+      }
+      else if (lastWeekAvg >= 41 && lastWeekAvg <= 50) {
+        setLastWeekColor('darkGreen')
+      }
+      else if (lastWeekAvg >= 51 && lastWeekAvg <= 60) {
+        setLastWeekColor('lightGreen')
+      }
+      else if (lastWeekAvg >= 61 && lastWeekAvg <= 70) {
+        setLastWeekColor('honeyYellow')
+      }
+      else if (lastWeekAvg >= 71 && lastWeekAvg <= 80) {
+        setLastWeekColor('darkOrange')
+      }
+      else if (lastWeekAvg >= 81 && lastWeekAvg <= 90) {
+        setLastWeekColor('orangeRed')
+      }
+      else if (lastWeekAvg >= 91) {
+        setLastWeekColor('red')
+      }
+      else {
+        setLastWeekColor('white')
+      }
+    }
+  }, [lastWeekAvg])
+
+  const tempTextStyles = lastWeekColor ? `text-${lastWeekColor}` : 'text-white'
+  const titleCaseColor = convertFromCamel(lastWeekColor)
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">Temperature Blanket Helper</h1>
-      <main>
-        <section>
-          <h2>Last Week</h2>
-          <p>Average Temperature (F): {avgTemp}</p>
-          <p>Color: {color}</p>
-          <p>Weather Station: {weatherStation}</p>
-          <button onClick={getWeatherStation}>Get weather station</button>
-          <button onClick={getWeather}>Get data</button>
-        </section>
-      </main>
-    </div>
+    <main className='h-[100vh] flex flex-col justify-center items-center bg-black text-white'>
+      <section className='flex flex-col items-center justify-between w-[50%] h-[50%] border p-5 bg-black p-5 rounded-xl text-white'>
+        <h1 className={`${tempTextStyles} text-8xl`}>{lastWeekAvg}&#8457;</h1>
+        <p className='font-semibold tracking-wider'>{titleCaseColor ?? "Click Update for last week's weather"}</p>
+        <button className='w-[50%] border border-white rounded-xl p-5 hover:bg-white hover:text-black' onClick={updateAvg}>Update</button>
+      </section>
+    </main>
   )
 }
 
