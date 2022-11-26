@@ -126,18 +126,16 @@ function App() {
       else if (lastWeekAvg >= 91) {
         setLastWeekColor('red')
       }
-      else {
-        setLastWeekColor('white')
-      }
     }
   }, [lastWeekAvg])
 
-  const tempTextStyles = lastWeekColor ? `text-${lastWeekColor}` : 'text-white'
+  const tempTextStyles = lastWeekColor ? `text-${lastWeekColor} text-8xl` : 'text-white text-8xl'
   const titleCaseColor = convertFromCamel(lastWeekColor)
+
   return (
-    <main className='h-[100vh] flex flex-col justify-center items-center bg-black text-white'>
-      <section className='flex flex-col items-center justify-between w-[50%] h-[50%] border p-5 bg-black p-5 rounded-xl text-white'>
-        <h1 className={`${tempTextStyles} text-8xl`}>{lastWeekAvg}&#8457;</h1>
+    <main className='h-[100vh] flex flex-col justify-center items-center text-white bg-black'>
+      <section className='flex flex-col items-center justify-between w-[50%] min-h-[420px] min-w-[340px] h-[50%] border p-5 bg-black p-5 rounded-xl'>
+        <h1 className={tempTextStyles}>{lastWeekAvg}&#8457;</h1>
         <p className='font-semibold tracking-wider'>{titleCaseColor ?? "Click Update for last week's weather"}</p>
         <button className='w-[50%] border border-white rounded-xl p-5 hover:bg-white hover:text-black' onClick={updateAvg}>Update</button>
       </section>
