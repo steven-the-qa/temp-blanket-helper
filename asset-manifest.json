@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/temp-blanket-helper/static/css/main.adbb58ce.css",
+    "main.js": "/temp-blanket-helper/static/js/main.321656b3.js",
+    "index.html": "/temp-blanket-helper/index.html",
+    "main.adbb58ce.css.map": "/temp-blanket-helper/static/css/main.adbb58ce.css.map",
+    "main.321656b3.js.map": "/temp-blanket-helper/static/js/main.321656b3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.adbb58ce.css",
+    "static/js/main.321656b3.js"
+  ]
+}
