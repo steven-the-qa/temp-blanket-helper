@@ -19,3 +19,16 @@ Below is the color scale she plans to use that I referenced when making this app
 71 - 80 = Dark Orange
 81 - 90 = Orange Red
 >= 90   = Red
+
+|Temperature Range|Color|
+|-----------------|-----|
+|<= 10|Purple|
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
