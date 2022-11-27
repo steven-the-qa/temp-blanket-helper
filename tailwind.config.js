@@ -15,9 +15,8 @@ module.exports = {
         honeyYellow: '#facc15',
         darkOrange: '#ea580c',
         orangeRed: '#ff4500',
-        red: '#ef4444'
+        red: '#dc2626'
       }
     }
-  },
-  plugins: [],
+  }
 }

@@ -12,6 +12,19 @@ function App() {
     "lat": 43.170058,
     "lon": -89.263276
   }
+
+  const colors = {
+    purple: 'text-purple text-8xl',
+    indigo: 'text-indigo text-8xl',
+    royalBlue: 'text-royalBlue text-8xl',
+    aquamarine: 'text-aquamarine text-8xl',
+    darkGreen: 'text-darkGreen text-8xl',
+    lightGreen: 'text-lightGreen text-8xl',
+    honeyYellow: 'text-honeyYellow text-8xl',
+    darkOrange: 'text-darkOrange text-8xl',
+    orangeRed: 'text-orangeRed text-8xl',
+    red: 'text-red text-8xl'
+  }
   const currentDate = new Date()
   const millsInADay = 86400000
   const yesterday = new Date(currentDate - millsInADay)
@@ -129,7 +142,7 @@ function App() {
     }
   }, [lastWeekAvg])
 
-  const tempTextStyles = lastWeekColor ? `text-${lastWeekColor} text-8xl` : 'text-white text-8xl'
+  const tempTextStyles = lastWeekColor ? colors[lastWeekColor] : 'text-white text-8xl'
   const titleCaseColor = convertFromCamel(lastWeekColor)
 
   return (
