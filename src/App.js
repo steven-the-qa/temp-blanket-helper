@@ -13,18 +13,6 @@ function App() {
     "lon": -89.263276
   }
 
-  const colors = {
-    purple: 'text-purple text-8xl',
-    indigo: 'text-indigo text-8xl',
-    royalBlue: 'text-royalBlue text-8xl',
-    aquamarine: 'text-aquamarine text-8xl',
-    darkGreen: 'text-darkGreen text-8xl',
-    lightGreen: 'text-lightGreen text-8xl',
-    honeyYellow: 'text-honeyYellow text-8xl',
-    darkOrange: 'text-darkOrange text-8xl',
-    orangeRed: 'text-orangeRed text-8xl',
-    red: 'text-red text-8xl'
-  }
   const currentDate = new Date()
   const millsInADay = 86400000
   const yesterday = new Date(currentDate - millsInADay)
@@ -142,13 +130,13 @@ function App() {
     }
   }, [lastWeekAvg])
 
-  const tempTextStyles = lastWeekColor ? colors[lastWeekColor] : 'text-white text-8xl'
+  const tempTextStyles = lastWeekColor ? { color: lastWeekColor, fontSize: '6rem' } : { color: 'white', fontSize: '6rem' }
   const titleCaseColor = convertFromCamel(lastWeekColor)
 
   return (
     <main className='h-[100vh] flex flex-col justify-center items-center text-white bg-black'>
       <section className='flex flex-col items-center justify-between w-[50%] min-h-[420px] min-w-[340px] h-[50%] border p-5 bg-black p-5 rounded-xl'>
-        <h1 className={tempTextStyles}>{lastWeekAvg}&#8457;</h1>
+        <h1 style={tempTextStyles}>{lastWeekAvg}&#8457;</h1>
         <p className='font-semibold tracking-wider'>{titleCaseColor ?? "Click Update for last week's weather"}</p>
         <button className='w-[50%] border border-white rounded-xl p-5 hover:bg-white hover:text-black' onClick={updateAvg}>Update</button>
       </section>
