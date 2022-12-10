@@ -41,13 +41,15 @@ function App() {
       .then(function (response) {
         const station = response.data.data[0];
         setWeatherStation(station.id)
+        console.log(response)
       })
       .catch(function (error) {
         console.error(error);
       });
   }
 
-  function getWeather() {
+  async function getWeather() {
+    await getWeatherStation()
     const options = {
       method: 'GET',
       url: 'https://meteostat.p.rapidapi.com/stations/daily',
@@ -67,22 +69,22 @@ function App() {
   }
 
   function celsiusToFahrenheit(tempC) {
+    console.log(`${tempC} is the value we pass into celsiusToFahrenheit`)
     return Math.round(tempC * 1.8 + 32)
   }
 
-  function getAvgTemp() {
+  async function getAvgTemp() {
+    await getWeather()
     let sum = 0;
+    console.log(`${lastWeekDailyTemps} is last week's temps`)
+    console.log(`${sum} is the initial sum`)
     for (let i in lastWeekDailyTemps) {
+      console.log(`${sum} is the round ${i} sum`);
       sum += lastWeekDailyTemps[i].tavg
     }
+    console.log(`${sum} is what we convert to Fahrenheit`)
     // We should only run this for a list of 7 daily temps
     setLastWeekAvg(celsiusToFahrenheit(sum / 7))
-  }
-
-  function updateAvg() {
-    getWeatherStation()
-    getWeather()
-    getAvgTemp()
   }
 
   function convertFromCamel(camelCaseText) {
@@ -138,7 +140,7 @@ function App() {
       <section className='flex flex-col items-center justify-between w-[50%] min-h-[420px] min-w-[340px] h-[50%] border p-5 bg-black p-5 rounded-xl'>
         <h1 style={tempTextStyles}>{lastWeekAvg}&#8457;</h1>
         <p className='font-semibold tracking-wider'>{titleCaseColor ?? "Click Update for last week's weather"}</p>
-        <button className='w-[50%] border border-white rounded-xl p-5 hover:bg-white hover:text-black' onClick={updateAvg}>Update</button>
+        <button className='w-[50%] border border-white rounded-xl p-5 hover:bg-white hover:text-black' onClick={getAvgTemp}>Update</button>
       </section>
     </main>
   )
