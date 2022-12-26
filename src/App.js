@@ -3,8 +3,6 @@ import axios from 'axios'
 import { format } from 'date-fns'
 
 function App() {
-  const [weatherStation, setWeatherStation] = useState()
-  const [lastWeekDailyTemps, setLastWeekDailyTemps] = useState()
   const [lastWeekAvg, setLastWeekAvg] = useState('?')
   const [lastWeekColor, setLastWeekColor] = useState()
 
@@ -37,11 +35,10 @@ function App() {
       }
     };
 
-    axios.request(options)
+    return axios.request(options)
       .then(function (response) {
         const station = response.data.data[0];
-        setWeatherStation(station.id)
-        console.log(response)
+        return station.id
       })
       .catch(function (error) {
         console.error(error);
@@ -49,7 +46,7 @@ function App() {
   }
 
   async function getWeather() {
-    await getWeatherStation()
+    const weatherStation = await getWeatherStation()
     const options = {
       method: 'GET',
       url: 'https://meteostat.p.rapidapi.com/stations/daily',
@@ -60,29 +57,23 @@ function App() {
       }
     };
 
-    axios.request(options).then(function (response) {
-      setLastWeekDailyTemps(response.data.data)
-      console.log(response.data.data)
+    return axios.request(options).then(function (response) {
+      return response.data.data
     }).catch(function (error) {
       console.error(error);
     });
   }
 
   function celsiusToFahrenheit(tempC) {
-    console.log(`${tempC} is the value we pass into celsiusToFahrenheit`)
     return Math.round(tempC * 1.8 + 32)
   }
 
   async function getAvgTemp() {
-    await getWeather()
+    const lastWeekDailyTemps = await getWeather()
     let sum = 0;
-    console.log(`${lastWeekDailyTemps} is last week's temps`)
-    console.log(`${sum} is the initial sum`)
     for (let i in lastWeekDailyTemps) {
-      console.log(`${sum} is the round ${i} sum`);
       sum += lastWeekDailyTemps[i].tavg
     }
-    console.log(`${sum} is what we convert to Fahrenheit`)
     // We should only run this for a list of 7 daily temps
     setLastWeekAvg(celsiusToFahrenheit(sum / 7))
   }
