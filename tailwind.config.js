@@ -6,16 +6,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        purple: '#a21caf',
-        indigo: '#4f46e5',
-        royalBlue: '#1d4ed8',
-        aquamarine: '#22d3ee',
-        darkGreen: '#15803d',
-        lightGreen: '#a3e635',
-        honeyYellow: '#facc15',
-        darkOrange: '#ea580c',
-        orangeRed: '#ff4500',
-        red: '#dc2626'
+        amethyst: '#fc2d56',
+        sapphire: '#0C2542',
+        brightSkyBlue: '#23abd1',
+        deepForest: '#47472f',
+        fern: '#b8b878',
+        gold: '#e5af2b',
+        pumpkin: '#d55c2f',
+        cherry: '#ca0427',
+        burgundy: '#4f0409'
       }
     }
   }

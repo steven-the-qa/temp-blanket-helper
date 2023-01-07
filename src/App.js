@@ -90,35 +90,32 @@ function App() {
 
   useEffect(() => {
     if (typeof lastWeekAvg === 'number') {
-      if (lastWeekAvg <= 10) {
-        setLastWeekColor('purple')
+      if (lastWeekAvg <= 14) {
+        setLastWeekColor('amethyst')
       }
-      else if (lastWeekAvg >= 11 && lastWeekAvg <= 20) {
-        setLastWeekColor('indigo')
+      else if (lastWeekAvg >= 15 && lastWeekAvg <= 24) {
+        setLastWeekColor('sapphire')
       }
-      else if (lastWeekAvg >= 21 && lastWeekAvg <= 30) {
-        setLastWeekColor('royalBlue')
+      else if (lastWeekAvg >= 25 && lastWeekAvg <= 34) {
+        setLastWeekColor('brightSkyBlue')
       }
-      else if (lastWeekAvg >= 31 && lastWeekAvg <= 40) {
-        setLastWeekColor('aquamarine')
+      else if (lastWeekAvg >= 35 && lastWeekAvg <= 44) {
+        setLastWeekColor('deepForest')
       }
-      else if (lastWeekAvg >= 41 && lastWeekAvg <= 50) {
-        setLastWeekColor('darkGreen')
+      else if (lastWeekAvg >= 45 && lastWeekAvg <= 54) {
+        setLastWeekColor('fern')
       }
-      else if (lastWeekAvg >= 51 && lastWeekAvg <= 60) {
-        setLastWeekColor('lightGreen')
+      else if (lastWeekAvg >= 55 && lastWeekAvg <= 64) {
+        setLastWeekColor('gold')
       }
-      else if (lastWeekAvg >= 61 && lastWeekAvg <= 70) {
-        setLastWeekColor('honeyYellow')
+      else if (lastWeekAvg >= 65 && lastWeekAvg <= 74) {
+        setLastWeekColor('pumpkin')
       }
-      else if (lastWeekAvg >= 71 && lastWeekAvg <= 80) {
-        setLastWeekColor('darkOrange')
+      else if (lastWeekAvg >= 75 && lastWeekAvg <= 84) {
+        setLastWeekColor('cherry')
       }
-      else if (lastWeekAvg >= 81 && lastWeekAvg <= 90) {
-        setLastWeekColor('orangeRed')
-      }
-      else if (lastWeekAvg >= 91) {
-        setLastWeekColor('red')
+      else if (lastWeekAvg >= 85) {
+        setLastWeekColor('burgundy')
       }
     }
   }, [lastWeekAvg])
