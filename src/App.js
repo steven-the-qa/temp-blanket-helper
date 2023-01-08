@@ -78,9 +78,10 @@ function App() {
     setLastWeekAvg(celsiusToFahrenheit(sum / 7))
   }
 
-  function convertFromCamel(camelCaseText) {
+  function camelToTitle(camelCaseText) {
     if (typeof camelCaseText === 'string') {
-      const result = camelCaseText.replace(/([A-Z])/g, " $1");
+      const colorName = camelCaseText.replace(/text-/, '')
+      const result = colorName.replace(/([A-Z])/g, " $1");
       const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
   
       return finalResult
@@ -91,43 +92,40 @@ function App() {
   useEffect(() => {
     if (typeof lastWeekAvg === 'number') {
       if (lastWeekAvg <= 14) {
-        setLastWeekColor('amethyst')
+        setLastWeekColor('text-amethyst')
       }
       else if (lastWeekAvg >= 15 && lastWeekAvg <= 24) {
-        setLastWeekColor('sapphire')
+        setLastWeekColor('text-sapphire')
       }
       else if (lastWeekAvg >= 25 && lastWeekAvg <= 34) {
-        setLastWeekColor('brightSkyBlue')
+        setLastWeekColor('text-brightSkyBlue')
       }
       else if (lastWeekAvg >= 35 && lastWeekAvg <= 44) {
-        setLastWeekColor('deepForest')
+        setLastWeekColor('text-deepForest')
       }
       else if (lastWeekAvg >= 45 && lastWeekAvg <= 54) {
-        setLastWeekColor('fern')
+        setLastWeekColor('text-fern')
       }
       else if (lastWeekAvg >= 55 && lastWeekAvg <= 64) {
-        setLastWeekColor('gold')
+        setLastWeekColor('text-gold')
       }
       else if (lastWeekAvg >= 65 && lastWeekAvg <= 74) {
-        setLastWeekColor('pumpkin')
+        setLastWeekColor('text-pumpkin')
       }
       else if (lastWeekAvg >= 75 && lastWeekAvg <= 84) {
-        setLastWeekColor('cherry')
+        setLastWeekColor('text-cherry')
       }
       else if (lastWeekAvg >= 85) {
-        setLastWeekColor('burgundy')
+        setLastWeekColor('text-burgundy')
       }
     }
   }, [lastWeekAvg])
 
-  const tempTextStyles = lastWeekColor ? { color: lastWeekColor, fontSize: '6rem' } : { color: 'white', fontSize: '6rem' }
-  const titleCaseColor = convertFromCamel(lastWeekColor)
-
   return (
     <main className='h-[100vh] flex flex-col justify-center items-center text-white bg-black'>
       <section className='flex flex-col items-center justify-between w-[50%] min-h-[420px] min-w-[340px] h-[50%] border p-5 bg-black p-5 rounded-xl'>
-        <h1 style={tempTextStyles}>{lastWeekAvg}&#8457;</h1>
-        <p className='font-semibold tracking-wider'>{titleCaseColor ?? "Click Update for last week's weather"}</p>
+        <h1 className={`${lastWeekColor ?? 'text-white'} text-[6rem]`}>{lastWeekAvg}&#8457;</h1>
+        <p className='font-semibold tracking-wider'>{camelToTitle(lastWeekColor) ?? "Click Update for last week's weather"}</p>
         <button className='w-[50%] border border-white rounded-xl p-5 hover:bg-white hover:text-black' onClick={getAvgTemp}>Update</button>
       </section>
     </main>
